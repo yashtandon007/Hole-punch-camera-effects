@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <array name="animationList">
+        <item>Linear Animation</item>
+        <item>Accelerated Animation</item>
+        <item>Decelerated Animation</item>
+        <item>Bounce Animation</item>
+    </array>
+    <array name="capTypeList">
+        <item>Round</item>
+        <item>Straight</item>
+    </array>
+    <array name="colorConfigList">
+        <item>Single Color</item>
+        <item>Segment Color</item>
+        <item>Gradient Color</item>
+    </array>
+    <array name="directionList">
+        <item>Clockwise</item>
+        <item>Anti Clockwise</item>
+    </array>
+    <array name="positionList">
+        <item>0 Degree</item>
+        <item>90 Degree</item>
+        <item>180 Degree</item>
+        <item>270 Degree</item>
+    </array>
+</resources>

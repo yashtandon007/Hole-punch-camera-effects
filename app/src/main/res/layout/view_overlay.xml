@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:background="@color/transparent">
+
+    <LinearLayout
+        android:id="@+id/lLayout"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.holepunchbatteryindicator.holepunchcameraeffects.view.circularProgressBar.CircularProgressIndicator
+            android:id="@+id/circularProgressView"
+            android:layout_width="50dp"
+            android:layout_height="50dp"
+            android:layout_gravity="center" />
+    </LinearLayout>
+</RelativeLayout>
