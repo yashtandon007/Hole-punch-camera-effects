@@ -7,6 +7,7 @@ import com.holepunchbatteryindicator.holepunchcameraeffects.R;
 import com.holepunchbatteryindicator.holepunchcameraeffects.fragment.BatteryOptPermissionSlide;
 import com.holepunchbatteryindicator.holepunchcameraeffects.fragment.OverLayPermissionSlide;
 import com.holepunchbatteryindicator.holepunchcameraeffects.preferences.GlobalPreferenceManager;
+import com.startapp.sdk.adsbase.StartAppAd;
 
 import io.github.dreierf.materialintroscreen.MaterialIntroActivity;
 import io.github.dreierf.materialintroscreen.SlideFragmentBuilder;
@@ -32,5 +33,10 @@ public class IntroActivity extends MaterialIntroActivity {
         super.onFinish();
         GlobalPreferenceManager.setIntroScreenFinish(true);
         startActivity(new Intent(this, MainActivity.class));
+    }
+    @Override
+    public void onBackPressed() {
+        StartAppAd.onBackPressed(this);
+        super.onBackPressed();
     }
 }

@@ -12,6 +12,7 @@ import com.holepunchbatteryindicator.holepunchcameraeffects.preferences.GlobalPr
 import com.holepunchbatteryindicator.library.Model.HelpArin;
 import com.holepunchbatteryindicator.library.interfaces.OnItemClickListener;
 import com.holepunchbatteryindicator.library.navigationliveo.NavigationArin;
+import com.startapp.sdk.adsbase.StartAppAd;
 
 public class MainActivity extends NavigationArin implements OnItemClickListener {
     boolean isOnBootTrue = false;
@@ -99,4 +100,11 @@ public class MainActivity extends NavigationArin implements OnItemClickListener 
 //            }
 //        };
 //    }
+
+    @Override
+    public void onBackPressed() {
+        StartAppAd.onBackPressed(this);
+        super.onBackPressed();
+    }
+
 }

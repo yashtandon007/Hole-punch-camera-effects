@@ -27,6 +27,7 @@ import com.holepunchbatteryindicator.holepunchcameraeffects.R;
 import com.holepunchbatteryindicator.holepunchcameraeffects.preferences.GlobalPreferenceManager;
 import com.holepunchbatteryindicator.holepunchcameraeffects.service.OverlayService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.startapp.sdk.adsbase.StartAppAd;
 
 
 public class MainFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -256,6 +257,7 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
         SwitchCompat switchCompat = (SwitchCompat) findItem.getActionView().findViewById(R.id.switchOnOff);
         switchCompat.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             public void onCheckedChanged(CompoundButton compoundButton, boolean z) {
+                StartAppAd.showAd(compoundButton.getContext());
                 if (!z) {
                     MainFragment.this.stopOverlayService();
                     GlobalPreferenceManager.setOverlayServiceStart(false);
