@@ -1,0 +1,258 @@
+<?xml version="1.0" encoding="utf-8"?>
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:aapt="http://schemas.android.com/aapt"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/colorBlack">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:background="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvRadius"
+                    style="@style/TextViewBlackBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/brownishGrey"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Ring Radius"
+                    android:textColor="@color/colorWhite" />
+
+                <SeekBar
+                    android:id="@+id/seekbarRingRadius"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvRadius"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="25dp"
+                    android:layout_marginBottom="25dp"
+                    android:max="200"
+                    android:min="70"
+                    android:progress="100" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:background="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvPosition"
+                    style="@style/TextViewBlackBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/brownishGrey"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Ring Position"
+                    android:textColor="@color/colorWhite" />
+
+                <com.holepunchbatteryindicator.holepunchcameraeffects.view.RemoteButtonLayout
+                    android:id="@+id/dpad"
+                    android:layout_width="200dp"
+                    android:layout_height="180dp"
+                    android:layout_below="@+id/tvPosition"
+                    android:layout_centerInParent="true"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginVertical="12dp" />
+
+                <TextView
+                    android:id="@+id/tvStep"
+                    style="@style/TextViewPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/dpad"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="20dp"
+                    android:text="Movement speed" />
+
+                <SeekBar
+                    android:id="@+id/seekBarStep"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvStep"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="20dp"
+                    android:max="20"
+                    android:progress="8" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:background="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvThickness"
+                    style="@style/TextViewBlackBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/brownishGrey"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Thickness"
+                    android:textColor="@color/colorWhite" />
+
+                <TextView
+                    android:id="@+id/tvOuter"
+                    style="@style/TextViewPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvThickness"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="12dp"
+                    android:text="Outer circle Thickness" />
+
+                <SeekBar
+                    android:id="@+id/outBarThickness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvOuter"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="8dp"
+                    android:max="20"
+                    android:progress="8" />
+
+                <TextView
+                    android:id="@+id/tvInner"
+                    style="@style/TextViewPrimary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/outBarThickness"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="@dimen/_20sdp"
+                    android:text="Progress Bar Thickness" />
+
+                <SeekBar
+                    android:id="@+id/innerBarThickness"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvInner"
+                    android:layout_alignParentLeft="true"
+                    android:layout_marginHorizontal="@dimen/_15sdp"
+                    android:layout_marginTop="12dp"
+                    android:layout_marginBottom="20dp"
+                    android:max="20"
+                    android:progress="8" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <LinearLayout
+            android:id="@+id/bannerLayout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:visibility="gone" />
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:background="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvDirection"
+                    style="@style/TextViewBlackBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/brownishGrey"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Direction"
+                    android:textColor="@color/colorWhite" />
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/dropdownDirection"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvDirection"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="24dp"
+                    app:ms_arrowSize="16dp"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="false" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+
+        <androidx.cardview.widget.CardView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:cardCornerRadius="4dp"
+            app:cardElevation="2dp"
+            app:cardUseCompatPadding="true">
+
+            <RelativeLayout
+                android:background="@color/colorBlack"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/tvStartPosition"
+                    style="@style/TextViewBlackBold"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@color/brownishGrey"
+                    android:padding="@dimen/_5sdp"
+                    android:text="Progress Start Position"
+                    android:textColor="@color/colorWhite" />
+
+                <fr.ganfra.materialspinner.MaterialSpinner
+                    android:id="@+id/dropdownStartPosition"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/tvStartPosition"
+                    android:layout_marginHorizontal="16dp"
+                    android:layout_marginTop="16dp"
+                    android:layout_marginBottom="24dp"
+                    app:ms_arrowSize="16dp"
+                    app:ms_enableErrorLabel="false"
+                    app:ms_enableFloatingLabel="false" />
+            </RelativeLayout>
+        </androidx.cardview.widget.CardView>
+    </LinearLayout>
+</ScrollView>

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android" xmlns:app="http://schemas.android.com/apk/res-auto" xmlns:aapt="http://schemas.android.com/aapt" android:orientation="vertical" android:layout_width="match_parent" android:layout_height="match_parent">
+    <androidx.appcompat.widget.Toolbar android:theme="@style/ThemeOverlay.AppCompat.Dark.ActionBar" android:id="@+id/toolbar" android:background="?attr/colorPrimary" android:layout_width="match_parent" android:layout_height="?attr/actionBarSize" android:minHeight="?attr/actionBarSize" app:popupTheme="@style/ThemeOverlay.AppCompat.Dark.ActionBar"/>
+    <androidx.drawerlayout.widget.DrawerLayout android:id="@+id/drawerLayout" android:layout_width="match_parent" android:layout_height="match_parent" app:statusBarBackground="?attr/colorPrimary">
+        <LinearLayout android:orientation="vertical" android:fitsSystemWindows="false" android:layout_width="match_parent" android:layout_height="match_parent">
+            <include layout="@layout/navigation_container"/>
+        </LinearLayout>
+        <com.google.android.material.internal.ScrimInsetsFrameLayout android:layout_gravity="start" android:id="@+id/relativeDrawer" android:layout_width="@dimen/drawer_layout_width" android:layout_height="match_parent" app:insetForeground="#0000">
+            <include layout="@layout/navigation_list_drawer"/>
+        </com.google.android.material.internal.ScrimInsetsFrameLayout>
+    </androidx.drawerlayout.widget.DrawerLayout>
+</LinearLayout>
