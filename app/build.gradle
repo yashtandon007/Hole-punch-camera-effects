@@ -11,8 +11,8 @@ android {
         applicationId "com.holepunchbatteryindicator.holepunchcameraeffects"
         minSdkVersion 21
         targetSdkVersion 33
-        versionCode 6
-        versionName "1.5"
+        versionCode 7
+        versionName "1.6"
 
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
     }
@@ -89,5 +89,7 @@ dependencies {
     implementation "androidx.lifecycle:lifecycle-reactivestreams-ktx:$lifecycle_version"
 
     implementation 'androidx.work:work-runtime-ktx:2.7.0'
+    implementation 'com.google.android.ads:mediation-test-suite:3.0.0'
+    implementation 'com.google.ads.mediation:applovin:11.5.0.0'
 
 }
