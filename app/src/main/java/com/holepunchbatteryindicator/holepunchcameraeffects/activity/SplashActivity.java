@@ -1,5 +1,7 @@
 package com.holepunchbatteryindicator.holepunchcameraeffects.activity;
 
+import static com.holepunchbatteryindicator.holepunchcameraeffects.Application.adUnitId;
+
 import android.app.Application;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,18 +14,14 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.holepunchbatteryindicator.holepunchcameraeffects.R;
 import com.holepunchbatteryindicator.holepunchcameraeffects.preferences.GlobalPreferenceManager;
+import com.unity3d.ads.IUnityAdsLoadListener;
+import com.unity3d.ads.UnityAds;
+import com.unity3d.ads.UnityAdsShowOptions;
 
 public class SplashActivity extends AppCompatActivity {
     /* access modifiers changed from: protected */
-    public static InterstitialAd mInterstitialAdSplash;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,58 +32,27 @@ public class SplashActivity extends AppCompatActivity {
         setContentView(R.layout.splash_activity);
 
 
-        MobileAds.initialize(this, new OnInitializationCompleteListener() {
+        UnityAds.load(adUnitId,new IUnityAdsLoadListener() {
             @Override
-            public void onInitializationComplete(InitializationStatus initializationStatus) {
-                Log.e("yash", "add initialised");
-                loadAdd();
+            public void onUnityAdsAdLoaded(String placementId) {
+                UnityAds.show(SplashActivity.this, adUnitId, new UnityAdsShowOptions(), null);
+                if (GlobalPreferenceManager.isIntroscreenFinish()) {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                } else {
+                    startActivity(new Intent(SplashActivity.this, IntroActivity.class));
+                }
+                finish();
+            }
+
+            @Override
+            public void onUnityAdsFailedToLoad(String placementId, UnityAds.UnityAdsLoadError error, String message) {
+                Log.e("UnityAdsExample", "Unity Ads failed to load ad for " + placementId + " with error: [" + error + "] " + message);
             }
         });
 
 
-        new Handler().postDelayed(new Runnable() {
-            @Override
-            public void run() {
-                Log.e("yash"," show........");
-
-                // Show the app open ad.
-                Application application = getApplication();
-
-                ((com.holepunchbatteryindicator.holepunchcameraeffects.Application) application)
-                        .showAdIfAvailable(
-                                SplashActivity.this,
-                                new com.holepunchbatteryindicator.holepunchcameraeffects.Application.OnShowAdCompleteListener() {
-                                    @Override
-                                    public void onShowAdComplete() {
-                                        if (GlobalPreferenceManager.isIntroscreenFinish()) {
-                                            startActivity(new Intent(SplashActivity.this, MainActivity.class));
-                                        } else {
-                                            startActivity(new Intent(SplashActivity.this, IntroActivity.class));
-                                        }
-                                        finish();
-                                    }
-                                });
-            }
-        }, 4000);
-
     }
 
-    private void loadAdd() {
-        Log.e("yash", " loadAdd");
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        InterstitialAd.load(SplashActivity.this, SplashActivity.this.getResources().getString(R.string.intersticial), adRequest, new InterstitialAdLoadCallback() {
-            @Override
-            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                super.onAdLoaded(interstitialAd);
-                Log.e("yash", " loaded............");
-                mInterstitialAdSplash = interstitialAd;
-
-            }
-
-        });
-
-    }
 
 
 }

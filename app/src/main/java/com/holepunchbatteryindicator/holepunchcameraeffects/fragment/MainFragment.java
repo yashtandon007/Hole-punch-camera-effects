@@ -1,5 +1,7 @@
 package com.holepunchbatteryindicator.holepunchcameraeffects.fragment;
 
+import static com.holepunchbatteryindicator.holepunchcameraeffects.Application.adUnitId;
+
 import android.app.ActivityManager;
 import android.content.ComponentName;
 import android.content.Context;
@@ -18,6 +20,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.CompoundButton;
+import android.widget.FrameLayout;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.widget.SwitchCompat;
@@ -26,15 +29,16 @@ import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentManager;
 
 import com.balysv.materialripple.BuildConfig;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.interstitial.InterstitialAd;
-import com.google.android.gms.ads.interstitial.InterstitialAdLoadCallback;
 import com.holepunchbatteryindicator.holepunchcameraeffects.R;
 import com.holepunchbatteryindicator.holepunchcameraeffects.activity.SplashActivity;
 import com.holepunchbatteryindicator.holepunchcameraeffects.preferences.GlobalPreferenceManager;
 import com.holepunchbatteryindicator.holepunchcameraeffects.service.OverlayService;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-
+import com.unity3d.ads.IUnityAdsLoadListener;
+import com.unity3d.ads.UnityAds;
+import com.unity3d.ads.UnityAdsShowOptions;
+import com.unity3d.services.banners.BannerView;
+import com.unity3d.services.banners.UnityBannerSize;
 
 
 public class MainFragment extends Fragment implements BottomNavigationView.OnNavigationItemSelectedListener {
@@ -68,32 +72,33 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
         return new MainFragment();
     }
 
-    private  InterstitialAd mInterstitialAd;
+
 
     private void loadAdd() {
         Log.e("yash"," loadAdd");
-        AdRequest adRequest = new AdRequest.Builder().build();
-
-        InterstitialAd.load(getContext(), getString(R.string.intersticial),adRequest,new InterstitialAdLoadCallback() {
+        UnityAds.load(adUnitId,new IUnityAdsLoadListener() {
             @Override
-            public void onAdLoaded(@NonNull InterstitialAd interstitialAd) {
-                super.onAdLoaded(interstitialAd);
-                mInterstitialAd = interstitialAd;
-                Log.i("TAG", "onAdLoaded");
+            public void onUnityAdsAdLoaded(String placementId) {
+                UnityAds.show(getActivity(), adUnitId, new UnityAdsShowOptions(), null);
+            }
+
+            @Override
+            public void onUnityAdsFailedToLoad(String placementId, UnityAds.UnityAdsLoadError error, String message) {
+                Log.e("UnityAdsExample", "Unity Ads failed to load ad for " + placementId + " with error: [" + error + "] " + message);
             }
         });
 
     }
-
 
     public View onCreateView(LayoutInflater layoutInflater, ViewGroup viewGroup, Bundle bundle) {
         setHasOptionsMenu(true);
         int i = 0;
         View inflate = layoutInflater.inflate(R.layout.fragment_main, viewGroup, false);
         ((BottomNavigationView) inflate.findViewById(R.id.bottomNav)).setOnNavigationItemSelectedListener(this);
-        if(SplashActivity.mInterstitialAdSplash!=null){
-            SplashActivity.mInterstitialAdSplash.show(getActivity());
-        }
+        FrameLayout frameLayout = inflate.findViewById(R.id.frameBanner);
+        BannerView banner = new BannerView(getActivity(), "Banner_Android", new UnityBannerSize(320, 50));
+        banner.load();
+        frameLayout.addView(banner);
         loadAdd();
         this.fragment1 = new PositionFragment();
         this.fragment2 = new ColorFragment();
@@ -313,10 +318,7 @@ public class MainFragment extends Fragment implements BottomNavigationView.OnNav
     }
 
     private void showAdd() {
-        if (mInterstitialAd != null) {
-            mInterstitialAd.show(getActivity());
-            loadAdd();
-        }
+        loadAdd();
     }
 
     private boolean isMyServiceRunning(Class<?> serviceClass) {

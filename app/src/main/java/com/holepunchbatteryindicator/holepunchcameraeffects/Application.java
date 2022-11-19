@@ -16,19 +16,13 @@ import com.github.stkent.amplify.feedback.DefaultEmailFeedbackCollector;
 import com.github.stkent.amplify.feedback.GooglePlayStoreFeedbackCollector;
 import com.github.stkent.amplify.tracking.Amplify;
 import com.github.stkent.amplify.tracking.rules.GooglePlayStoreRule;
-import com.google.android.gms.ads.AdError;
-import com.google.android.gms.ads.AdRequest;
-import com.google.android.gms.ads.FullScreenContentCallback;
-import com.google.android.gms.ads.LoadAdError;
-import com.google.android.gms.ads.MobileAds;
-import com.google.android.gms.ads.appopen.AppOpenAd;
-import com.google.android.gms.ads.initialization.InitializationStatus;
-import com.google.android.gms.ads.initialization.OnInitializationCompleteListener;
 import com.orhanobut.hawk.Hawk;
+import com.unity3d.ads.IUnityAdsInitializationListener;
+import com.unity3d.ads.UnityAds;
 
 import java.util.Date;
 
-public class Application extends android.app.Application implements android.app.Application.ActivityLifecycleCallbacks, LifecycleObserver {
+public class Application extends android.app.Application  {
     //test comit
     public static Context context;
     Camera.Size[] f0A;
@@ -90,51 +84,10 @@ public class Application extends android.app.Application implements android.app.
     int f49x;
     int f50y;
     int f51z;
+    String gameID = "5027529";
+    Boolean TESTMODE = false;
+    public static String adUnitId = "Interstitial_Android";
 
-    private AppOpenAdManager appOpenAdManager;
-    private Activity currentActivity;
-
-    /**
-     * Interface definition for a callback to be invoked when an app open ad is complete.
-     */
-    public interface OnShowAdCompleteListener {
-        void onShowAdComplete();
-    }
-
-    /**
-     * ActivityLifecycleCallback methods.
-     */
-    @Override
-    public void onActivityCreated(Activity activity, Bundle savedInstanceState) {
-    }
-
-    @Override
-    public void onActivityStarted(Activity activity) {
-        // Updating the currentActivity only when an ad is not showing.
-        if (!appOpenAdManager.isShowingAd) {
-            currentActivity = activity;
-        }
-    }
-
-    @Override
-    public void onActivityResumed(Activity activity) {
-    }
-
-    @Override
-    public void onActivityStopped(Activity activity) {
-    }
-
-    @Override
-    public void onActivityPaused(Activity activity) {
-    }
-
-    @Override
-    public void onActivitySaveInstanceState(Activity activity, Bundle bundle) {
-    }
-
-    @Override
-    public void onActivityDestroyed(Activity activity) {
-    }
 
 
     @Override
@@ -143,172 +96,19 @@ public class Application extends android.app.Application implements android.app.
         context = this;
         Hawk.init(getApplicationContext()).build();
         Amplify.initSharedInstance(this).setPositiveFeedbackCollectors(new GooglePlayStoreFeedbackCollector()).setCriticalFeedbackCollectors(new DefaultEmailFeedbackCollector("someone@example.com")).addEnvironmentBasedRule(new GooglePlayStoreRule());
-
-        this.registerActivityLifecycleCallbacks(this);
-        MobileAds.initialize(
-                this,
-                new OnInitializationCompleteListener() {
-                    @Override
-                    public void onInitializationComplete(InitializationStatus initializationStatus) {
-                    }
-                });
-
-        ProcessLifecycleOwner.get().getLifecycle().addObserver(this);
-        appOpenAdManager = new AppOpenAdManager();
-
-    }
-
-    public void showAdIfAvailable(
-            @NonNull Activity activity,
-            @NonNull OnShowAdCompleteListener onShowAdCompleteListener) {
-        // We wrap the showAdIfAvailable to enforce that other classes only interact with MyApplication
-        // class.
-        appOpenAdManager.showAdIfAvailable(activity, onShowAdCompleteListener);
-    }
-
-
-    /**
-     * LifecycleObserver method that shows the app open ad when the app moves to foreground.
-     */
-    @OnLifecycleEvent(Lifecycle.Event.ON_START)
-    protected void onMoveToForeground() {
-        // Show the ad (if available) when the app moves to foreground.
-        appOpenAdManager.showAdIfAvailable(currentActivity, new OnShowAdCompleteListener() {
+        UnityAds.initialize(this, gameID, TESTMODE, new IUnityAdsInitializationListener() {
             @Override
-            public void onShowAdComplete() {
-                // Empty because the user will go back to the activity that shows the ad.
+            public void onInitializationComplete() {
+                Log.e("unity","onInitializationComplete");
+            }
+
+            @Override
+            public void onInitializationFailed(UnityAds.UnityAdsInitializationError unityAdsInitializationError, String s) {
+                Log.e("unity","onInitializationFailed");
+
             }
         });
+
     }
-
-
-    /**
-     * Inner class that loads and shows app open ads.
-     */
-    private class AppOpenAdManager {
-        private static final String LOG_TAG = "AppOpenAdManager";
-        private final String AD_UNIT_ID = Application.this.getApplicationContext().getString(R.string.appopen);
-        long loadTime = 0;
-        private AppOpenAd appOpenAd = null;
-        private boolean isLoadingAd = false;
-        private boolean isShowingAd = false;
-
-        public void showAdIfAvailable(
-                @NonNull final Activity activity,
-                @NonNull OnShowAdCompleteListener onShowAdCompleteListener) {
-            // If the app open ad is already showing, do not show the ad again.
-            if (isShowingAd) {
-                Log.d(AppOpenAdManager.LOG_TAG, "The app open ad is already showing.");
-                return;
-            }
-
-            // If the app open ad is not available yet, invoke the callback then load the ad.
-            if (!isAdAvailable()) {
-                Log.d(AppOpenAdManager.LOG_TAG, "The app open ad is not ready yet.");
-                onShowAdCompleteListener.onShowAdComplete();
-                loadAd(activity);
-                return;
-            }
-
-            appOpenAd.setFullScreenContentCallback(new FullScreenContentCallback() {
-                @Override
-                public void onAdDismissedFullScreenContent() {
-                    // Called when fullscreen content is dismissed.
-                    // Set the reference to null so isAdAvailable() returns false.
-                    Log.d(LOG_TAG, "Ad dismissed fullscreen content.");
-                    appOpenAd = null;
-                    isShowingAd = false;
-
-                    onShowAdCompleteListener.onShowAdComplete();
-                    loadAd(activity);
-                }
-
-                @Override
-                public void onAdFailedToShowFullScreenContent(AdError adError) {
-                    // Called when fullscreen content failed to show.
-                    // Set the reference to null so isAdAvailable() returns false.
-                    Log.d(LOG_TAG, adError.getMessage());
-                    appOpenAd = null;
-                    isShowingAd = false;
-
-                    onShowAdCompleteListener.onShowAdComplete();
-                    loadAd(activity);
-                }
-
-                @Override
-                public void onAdShowedFullScreenContent() {
-                    // Called when fullscreen content is shown.
-                    Log.d(LOG_TAG, "Ad showed fullscreen content.");
-                }
-            });
-            isShowingAd = true;
-            appOpenAd.show(activity);
-        }
-
-        /**
-         * Constructor.
-         */
-        public AppOpenAdManager() {
-        }
-
-        /**
-         * Request an ad.
-         */
-        public void loadAd(Context context) {
-            // Do not load ad if there is an unused ad or one is already loading.
-            if (isLoadingAd || isAdAvailable()) {
-                return;
-            }
-
-            isLoadingAd = true;
-            AdRequest request = new AdRequest.Builder().build();
-            AppOpenAd.load(
-                    context, AD_UNIT_ID, request,
-                    AppOpenAd.APP_OPEN_AD_ORIENTATION_PORTRAIT,
-                    new AppOpenAd.AppOpenAdLoadCallback() {
-                        @Override
-                        public void onAdLoaded(AppOpenAd ad) {
-                            // Called when an app open ad has loaded.
-                            Log.d(LOG_TAG, "Ad was loaded.");
-                            appOpenAd = ad;
-                            isLoadingAd = false;
-                            loadTime = (new Date()).getTime();
-                        }
-
-                        @Override
-                        public void onAdFailedToLoad(LoadAdError loadAdError) {
-                            // Called when an app open ad has failed to load.
-                            Log.d(LOG_TAG, loadAdError.getMessage());
-                            isLoadingAd = false;
-                        }
-                    });
-        }
-        /** Check if ad exists and can be shown. */
-        /**
-         * Utility method to check if ad was loaded more than n hours ago.
-         */
-        private boolean wasLoadTimeLessThanNHoursAgo(long numHours) {
-            long dateDifference = (new Date()).getTime() - this.loadTime;
-            long numMilliSecondsPerHour = 3600000;
-            return (dateDifference < (numMilliSecondsPerHour * numHours));
-        }
-
-        /**
-         * Check if ad exists and can be shown.
-         */
-        public boolean isAdAvailable() {
-            return appOpenAd != null && wasLoadTimeLessThanNHoursAgo(4);
-        }
-    }
-
-
 }
 
-//    public void onCreate() {
-//        super.onCreate();
-//
-//
-
-//    }
-//
-//}
